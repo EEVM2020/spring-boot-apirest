@@ -18,11 +18,18 @@ public class Cliente implements Serializable {
 	
 	private String nombre;
 	private String apellido;
+	
+	@Column(nullable = false)
 	private String correo;
 	
 	@Column(name="creacion")
 	@Temporal(TemporalType.DATE)
 	private Date creacion;
+	
+	@PrePersist
+	private void prePersist() {
+		this.setCreacion(new Date());
+	}
 	
 	public Long getId() {
 		return id;
@@ -53,6 +60,12 @@ public class Cliente implements Serializable {
 	}
 	public void setCreacion(Date creacion) {
 		this.creacion = creacion;
+	}
+
+	@Override
+	public String toString() {
+		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", correo=" + correo
+				+ ", creacion=" + creacion + "]";
 	} 
 	
 	
