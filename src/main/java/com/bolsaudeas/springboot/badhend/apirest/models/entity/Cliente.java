@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.*;
 import jakarta.persistence.*;
+//import jakarta.
+
 
 @Entity
 @Table(name="clientes")
@@ -16,9 +19,13 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+   @NotEmpty(message = "no dejar asi!!")
+   @Size(min = 2, max=250)
 	private String nombre;
 	private String apellido;
 	
+	@NotEmpty
+	@Email
 	@Column(nullable = false)
 	private String correo;
 	

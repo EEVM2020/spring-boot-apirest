@@ -3,12 +3,16 @@ package com.bolsaudeas.springboot.badhend.apirest.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bolsaudeas.springboot.badhend.apirest.models.entity.Cliente;
 import com.bolsaudeas.springboot.badhend.apirest.models.services.IClienteService;
 
+import jakarta.validation.Valid;
+
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -36,6 +42,11 @@ public class ClienteRestController {
 		return clienteService.findAll();
 	}
 
+	@GetMapping("/clientes/paginar/{pagina}")
+	public Page<Cliente> index(@PathVariable Integer pagina){
+		return clienteService.findAll(PageRequest.of(pagina, 1));
+	}
+	
 	@GetMapping("/clientes/{id}")
 	public ResponseEntity<?> mostrar(@PathVariable Long id) {
 		Cliente cliente=null;
@@ -58,10 +69,18 @@ public class ClienteRestController {
 	} 
 
 	@PostMapping("/clientes")
-	private ResponseEntity<?> guardar(@RequestBody Cliente cliente) {
+	private ResponseEntity<?> guardar(@Valid @RequestBody Cliente cliente, BindingResult validaciones) {
 		System.out.println("crear!! xxxx");
 		Cliente nuevoCliente=null;
 		Map<String,Object> response=new HashMap<>();
+		
+		if(validaciones.hasErrors()) {
+			List<String>errores=validaciones.getFieldErrors().stream().map(es->"El campo '"+es.getField()+"' "+es.getDefaultMessage()).
+					collect(Collectors.toList());
+			response.put("errores", errores);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);		
+		}
+		
 		try {
 			nuevoCliente=clienteService.save(cliente);
 		} catch (DataAccessException e) {
@@ -77,12 +96,19 @@ public class ClienteRestController {
 
 	@PutMapping("/clientes/{id}")
 
-	public ResponseEntity<?> actualizar(@RequestBody Cliente cliente, @PathVariable Long id) {
+	public ResponseEntity<?> actualizar(@Valid @RequestBody Cliente cliente,BindingResult validaciones ,@PathVariable Long id) {
 		System.out.println("actualizar!! xxxx");
 
 		Cliente clienteActual=clienteService.findById(id);
 		Cliente clienteActualizado=null;
 		Map<String,Object> response=new HashMap<>();
+		
+		if(validaciones.hasErrors()) {
+			List<String>errores=validaciones.getFieldErrors().stream().map(es->"El campo '"+es.getField()+"' "+es.getDefaultMessage()).
+					collect(Collectors.toList());
+			response.put("errores", errores);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);		
+		}
 
 		if(clienteActual ==null) {
 			response.put("mensaje", "No existe el cliente");
