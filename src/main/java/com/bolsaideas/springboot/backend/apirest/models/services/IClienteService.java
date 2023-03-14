@@ -1,10 +1,11 @@
-package com.bolsaudeas.springboot.badhend.apirest.models.services;
+package com.bolsaideas.springboot.backend.apirest.models.services;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.bolsaudeas.springboot.badhend.apirest.models.entity.Cliente;
+import com.bolsaideas.springboot.backend.apirest.models.entity.Cliente;
+import com.bolsaideas.springboot.backend.apirest.models.entity.Region;
 public interface IClienteService {
 	
 	public List<Cliente> findAll();
@@ -17,6 +18,7 @@ public interface IClienteService {
 	
 	public void delete(Long id);
 	
+	public List<Region>buscarTodasRegiones();
 	
 
 }

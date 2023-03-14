@@ -1,7 +1,9 @@
-package com.bolsaudeas.springboot.badhend.apirest.models.entity;
+package com.bolsaideas.springboot.backend.apirest.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.*;
@@ -31,13 +33,30 @@ public class Cliente implements Serializable {
 	
 	@Column(name="creacion")
 	@Temporal(TemporalType.DATE)
+	//@NotEmpty(message = "No puede estar vacio")
 	private Date creacion;
 	
+	private String foto;
+	
+	@NotNull(message = "La region no puede estar vacia.")
+	@ManyToOne
+	@JoinColumn(name="region_id")
+	@JsonIgnoreProperties({"hibernateLazyInicializer","handler"})
+	private Region region;
+	
+	/*
 	@PrePersist
 	private void prePersist() {
 		this.setCreacion(new Date());
 	}
+*/	
 	
+	public Region getRegion() {
+		return region;
+	}
+	public void setRegion(Region region) {
+		this.region = region;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -68,7 +87,14 @@ public class Cliente implements Serializable {
 	public void setCreacion(Date creacion) {
 		this.creacion = creacion;
 	}
+	
 
+	public String getFoto() {
+		return foto;
+	}
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", correo=" + correo

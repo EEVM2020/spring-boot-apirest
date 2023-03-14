@@ -1,4 +1,4 @@
-package com.bolsaudeas.springboot.badhend.apirest.models.services;
+package com.bolsaideas.springboot.backend.apirest.models.services;
 
 import java.util.List;
 
@@ -8,8 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bolsaudeas.springboot.badhend.apirest.models.dao.IClienteDao;
-import com.bolsaudeas.springboot.badhend.apirest.models.entity.Cliente;
+import com.bolsaideas.springboot.backend.apirest.models.dao.IClienteDao;
+import com.bolsaideas.springboot.backend.apirest.models.entity.Cliente;
+import com.bolsaideas.springboot.backend.apirest.models.entity.Region;
 
 @Service
 public class ClienteServiceImpl implements IClienteService {
@@ -42,6 +43,12 @@ public class ClienteServiceImpl implements IClienteService {
 	@Override
 	public void delete(Long id) {
 		clienteDao.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Region> buscarTodasRegiones() {
+		return clienteDao.buscarTodasRegiones();
 	}
 
 

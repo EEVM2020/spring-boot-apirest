@@ -1,4 +1,4 @@
-package com.bolsaudeas.springboot.badhend.apirest;
+package com.bolsaideas.springboot.backend.apirest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
