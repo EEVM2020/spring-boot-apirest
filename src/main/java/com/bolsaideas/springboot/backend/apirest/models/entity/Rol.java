@@ -1,11 +1,11 @@
 package com.bolsaideas.springboot.backend.apirest.models.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
 import jakarta.persistence.*;
 
-@Entity(name="roles")
+@Entity
+@Table(name="roles")
 public class Rol implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -15,7 +15,7 @@ public class Rol implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name="rol", unique = true,length = 20)
+	@Column(name="nombre", unique = true,length = 20)
 	private String nombreRol;
 	
 
